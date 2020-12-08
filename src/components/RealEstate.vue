@@ -55,7 +55,6 @@ export default {
           e.id = this.$uuid.v4();
           this.api_data.push(e);
         });
-        console.log(res.data);
       }
       catch (e) {
         console.log(e);
