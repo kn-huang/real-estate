@@ -1,7 +1,7 @@
 <template>
   <div id="main" class="main-container">
     <Header />
-    <CardBox :darr="darr" />
+    <CardBox :load="load" :darr="darr" />
   </div>
 </template>
 <script>
@@ -9,7 +9,7 @@ import Header from './Header.vue'
 import CardBox from './CardBox.vue'
 export default {
   name: 'Main',
-  props: ['darr'],
+  props: [ 'darr', 'load'],
   components: {
     Header,
     CardBox

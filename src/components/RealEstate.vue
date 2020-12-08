@@ -1,12 +1,11 @@
 <template>
   <div id="real_estate" class="re-container" ref="re_container">
     <Arrow :direction="'left'" @shift="updateREArr" :unabled="unabled" />
-    <Main :darr="re_arr" />
+    <Main :load="show_load" :darr="re_arr" />
     <Arrow :direction="'right'" @shift="updateREArr" :unabled="unabled" />
   </div>
 </template>
 <script>
-import data from '../data.js'
 import Arrow from './Arrow.vue'
 import Main from './Main.vue'
 export default {
@@ -17,18 +16,27 @@ export default {
   },
   data () {
     return {
+      show_load: true,
+      api_data: [],
       re_arr: [],
       card_num: 0,
       start_idx: 0,
       end_idx: 0,
-      unabled: ''
+      unabled: 'both'
     }
   },
   created () {
     window.addEventListener("resize", this.updateCardNum);
   },
-  mounted () {
-    this.updateCardNum();
+  async mounted () {
+    try {
+      await this.callApi();
+      await this.updateCardNum();
+      this.show_load = false;
+    }
+    catch (e) {
+      console.log(e);
+    }
   },
   destryed () {
     window.removeEventListener("resize", this.updateCardNum);
@@ -39,6 +47,19 @@ export default {
     }
   },
   methods: {
+    async callApi () {
+      try {
+        let res = await this.axios.get();
+        res.data.forEach(e => {
+          e.id = this.$uuid.v4();
+          this.api_data.push(e);
+        });
+      }
+      catch (e) {
+        console.log(e);
+        throw 'callApi fail';
+      }
+    },
     updateCardNum () {
       let w = this.$refs.re_container.clientWidth;
       switch (w) {
@@ -61,8 +82,8 @@ export default {
       //updata start and end idx
       if (action === 'resize') {
         this.end_idx = this.start_idx + this.card_num;
-        if (this.end_idx >= data.darr.length) {
-          this.end_idx = data.darr.length - 1;
+        if (this.end_idx >= this.api_data.length) {
+          this.end_idx = this.api_data.length - 1;
           this.start_idx = this.end_idx - this.card_num;
         }
       }
@@ -78,14 +99,14 @@ export default {
       if (this.start_idx === 0) {
         this.unabled = 'left';
       }
-      else if (this.end_idx === (data.darr.length-1)) {
+      else if (this.end_idx === (this.api_data.length-1)) {
         this.unabled = 'right';
       }
       else {
         this.unabled = '';
       }
       //update re_arr
-      this.re_arr = data.darr.slice( this.start_idx, this.end_idx);
+      this.re_arr = this.api_data.slice( this.start_idx, this.end_idx);
     }
   }
 }

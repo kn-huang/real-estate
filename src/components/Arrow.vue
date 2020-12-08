@@ -1,7 +1,7 @@
 <template>
   <div id="arrow" class="arrow-container">
-    <LeftSVG v-if="direction === 'left'" @shift="shift" :block="unabled === 'left'" />
-    <RightSVG v-if="direction === 'right'" @shift="shift" :block="unabled === 'right'" />
+    <LeftSVG v-if="direction === 'left'" @shift="shift" :block="(unabled === 'left') || (unabled === 'both')" />
+    <RightSVG v-if="direction === 'right'" @shift="shift" :block="(unabled === 'right') || (unabled === 'both')" />
   </div>
 </template>
 <script>
