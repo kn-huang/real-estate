@@ -22,7 +22,7 @@ export default {
       card_num: 0,
       start_idx: 0,
       end_idx: 0,
-      unabled: 'both'
+      unabled: ''
     }
   },
   created () {
@@ -30,6 +30,7 @@ export default {
   },
   async mounted () {
     try {
+      this.unable = 'both';
       await this.callApi();
       await this.updateCardNum();
       this.show_load = false;
