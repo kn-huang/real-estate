@@ -2,17 +2,20 @@
   <div id="main" class="main-container">
     <Header />
     <CardBox :load="load" :darr="darr" />
+    <Footer :dlen="dlen" />
   </div>
 </template>
 <script>
 import Header from './Header.vue'
 import CardBox from './CardBox.vue'
+import Footer from './Footer.vue'
 export default {
   name: 'Main',
-  props: [ 'darr', 'load'],
+  props: [ 'darr', 'load', 'dlen'],
   components: {
     Header,
-    CardBox
+    CardBox,
+    Footer
   }
 }
 </script>

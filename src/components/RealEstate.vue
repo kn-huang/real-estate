@@ -1,7 +1,7 @@
 <template>
   <div id="real_estate" class="re-container" ref="re_container">
     <Arrow :direction="'left'" @shift="updateREArr" :unabled="unabled" />
-    <Main :load="show_load" :darr="re_arr" />
+    <Main :load="show_load" :darr="re_arr" :dlen="api_data.length" />
     <Arrow :direction="'right'" @shift="updateREArr" :unabled="unabled" />
   </div>
 </template>
@@ -55,6 +55,7 @@ export default {
           e.id = this.$uuid.v4();
           this.api_data.push(e);
         });
+        console.log(res.data);
       }
       catch (e) {
         console.log(e);
@@ -83,8 +84,8 @@ export default {
       //updata start and end idx
       if (action === 'resize') {
         this.end_idx = this.start_idx + this.card_num;
-        if (this.end_idx >= this.api_data.length) {
-          this.end_idx = this.api_data.length - 1;
+        if (this.end_idx > this.api_data.length) {
+          this.end_idx = this.api_data.length;
           this.start_idx = this.end_idx - this.card_num;
         }
       }
@@ -100,7 +101,7 @@ export default {
       if (this.start_idx === 0) {
         this.unabled = 'left';
       }
-      else if (this.end_idx === (this.api_data.length-1)) {
+      else if (this.end_idx === this.api_data.length) {
         this.unabled = 'right';
       }
       else {
@@ -130,7 +131,7 @@ export default {
 }
 .re-container {
   width: 980px;
-  height: 300px;
+  height: 320px;
   display: flex;
   flex-direction: row;
 }
